@@ -3,6 +3,8 @@ import { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
+
+
 export default function Diary() {
   const [getMessage, setGetMessage] = useState("");
   const [listOfNotes, setListOfNotes] = useState<string[]>([]);  // to save messages
@@ -12,7 +14,7 @@ export default function Diary() {
     id: 0,
     msg: "",
   });
-  //   const [editMessageIndex, setEditMessageIndex] = useState("");
+  
 
   return (
     <div className={`mt-4 px-4`}>
@@ -56,7 +58,7 @@ export default function Diary() {
                 <button
                   className={`bg-slate-200 p-2 rounded`}
                   onClick={() => {
-                    setListOfNotes([...listOfNotes, getMessage]);
+                    setListOfNotes([...listOfNotes, getMessage]); 
                     setGetMessage("");
                   }}
                 >
@@ -76,11 +78,13 @@ export default function Diary() {
           </div>
         </div>
       )}
+
+
       <div className={`grid grid-col-1 md:grid-cols-3`}>
+        
         {listOfNotes.map((value, index) => (
             <div
-              className={` bg-yellow-400 flex flex-col justify-between rounded w-[300px] h-[300px] mt-4 p-2 text-sm `}
-            >
+              className={` bg-yellow-400 flex flex-col justify-between rounded w-[300px] h-[300px] mt-4 p-2 text-sm `}>
               {value}
               <div
                 className={`flex items-center justify-center space-x-4 font-bold text-xl`}
