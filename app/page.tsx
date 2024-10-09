@@ -1,9 +1,11 @@
-"use client"
+"use client";
 
-import Diary from "./diary"
+import Diary from "./diary";
 
-export default function Home(){
-  return <div>
-   <Diary/>
-  </div>
+export default function Home() {
+  return (
+    <div>
+      <Diary />
+    </div>
+  );
 }

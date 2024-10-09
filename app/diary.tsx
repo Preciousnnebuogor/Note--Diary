@@ -4,18 +4,18 @@ import { FaPlus } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 
-
 export default function Diary() {
   const [getMessage, setGetMessage] = useState("");
-  const [listOfNotes, setListOfNotes] = useState<string[]>([]);  // to save messages
-  const [show, setShow] = useState(false); // use to show the textarea input message create
-  const [showEdit, setShowEdit] = useState(false); // use to  show the textarea input message edit
-  const [editMessage, setEditMessage] = useState({  // use for filter
+  const [listOfNotes, setListOfNotes] = useState<string[]>([]);
+  const [show, setShow] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
+  const [editMessage, setEditMessage] = useState({
     id: 0,
     msg: "",
   });
-  
 
+  const storedList = JSON.parse(localStorage.getItem("noteList")!) as string[];
+  // to get the item from the localstorage and use it to map through
   return (
     <div className={`mt-4 px-4`}>
       <div
@@ -58,7 +58,13 @@ export default function Diary() {
                 <button
                   className={`bg-slate-200 p-2 rounded`}
                   onClick={() => {
-                    setListOfNotes([...listOfNotes, getMessage]); 
+                    setListOfNotes([...listOfNotes, getMessage]);
+                    localStorage.setItem(
+                      "noteList",
+                      JSON.stringify(listOfNotes)
+                    );
+                    // noteList is the key for the localstorage
+
                     setGetMessage("");
                   }}
                 >
@@ -79,41 +85,40 @@ export default function Diary() {
         </div>
       )}
 
-
       <div className={`grid grid-col-1 md:grid-cols-3`}>
-        
-        {listOfNotes.map((value, index) => (
+        {storedList.map((value, index) => (
+          <div
+            className={` bg-yellow-400 flex flex-col justify-between rounded w-[300px] h-[300px] mt-4 p-2 text-sm `}
+          >
+            {value}
             <div
-              className={` bg-yellow-400 flex flex-col justify-between rounded w-[300px] h-[300px] mt-4 p-2 text-sm `}>
-              {value}
-              <div
-                className={`flex items-center justify-center space-x-4 font-bold text-xl`}
-              >
-                <button className={` px-5`}>
-                  <MdEdit
-                    onClick={() => {
-                      setEditMessage({   // add
-                        id: index,
-                        msg: value,
-                      });
-                      setShowEdit(true);
-                      // setEditMessageIndex()
-                    }}
-                  />
-                </button>
-                <button
+              className={`flex items-center justify-center space-x-4 font-bold text-xl`}
+            >
+              <button className={` px-5`}>
+                <MdEdit
+                  onClick={() => {
+                    setEditMessage({
+                      id: index,
+                      msg: value,
+                    });
+                    setShowEdit(true);
+                  }}
+                />
+              </button>
+              <button
                 onClick={() => {
-                    const itemDelete = listOfNotes.filter(   // delete
-                      (value, number) => index !== number
-                    );
-                    setListOfNotes(itemDelete);
-                    
+                  const itemDelete = listOfNotes.filter(
+                    (value, number) => index !== number
+                  );
+                  setListOfNotes(itemDelete);
+                  localStorage.setItem("noteList", JSON.stringify(itemDelete));
+                  // noteList is the key for the localstorage
                 }}
-                >
-                  <MdDelete />
-                </button>
-              </div>
+              >
+                <MdDelete />
+              </button>
             </div>
+          </div>
         ))}
       </div>
 
@@ -149,6 +154,12 @@ export default function Diary() {
                       (value, index) => index !== editMessage.id
                     );
                     setListOfNotes([...restData, editMessage.msg]);
+                    localStorage.setItem(
+                      "noteList",
+                      JSON.stringify(listOfNotes)
+                    );
+                    // noteList is the key for the localstorage
+
                     setShowEdit(false);
                   }}
                 >
